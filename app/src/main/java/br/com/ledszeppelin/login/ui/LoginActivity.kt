@@ -18,21 +18,6 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        val host: NavHostFragment = supportFragmentManager
-            .findFragmentById(R.id.fg_login_navhost) as NavHostFragment?
-            ?: return
-
-        val navController = host.navController
-
-        appBarConfiguration = AppBarConfiguration(navController.graph)
-        setupActionBar(navController, appBarConfiguration)
-    }
-
-    private fun setupActionBar(
-        navController: NavController,
-        appBarConfig: AppBarConfiguration
-    ) {
-        setupActionBarWithNavController(navController, appBarConfig)
     }
 
     override fun onSupportNavigateUp(): Boolean {
