@@ -1,13 +1,14 @@
 package br.com.ledszeppelin.login.ui
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import br.com.ledszeppelin.R
+import br.com.ledszeppelin.databinding.LoginFragmentBinding
 import br.com.ledszeppelin.login.viewmodel.LoginViewModel
 
 class LoginFragment : Fragment() {
@@ -16,13 +17,20 @@ class LoginFragment : Fragment() {
         fun newInstance() = LoginFragment()
     }
 
+    private lateinit var binding: LoginFragmentBinding
     private lateinit var viewModel: LoginViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.login_fragment, container, false)
+        binding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.login_fragment,
+            container,
+            false
+        )
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
