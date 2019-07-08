@@ -15,6 +15,7 @@ import java.io.IOException
 class ApiResponse<T>(private val logTag: String) {
 
     fun getApiOnResponse(response: Response<T>): Resource<T> {
+        //TODO("Tratar casos de erro.")
         response.errorBody()?.let { errorBody ->
             val error: ErrorResponse = (if (response.code() in 400 until 500) {
                 val moshi = Moshi.Builder().build()
@@ -23,6 +24,10 @@ class ApiResponse<T>(private val logTag: String) {
                     jsonAdapter.fromJson(errorBody.string())
                 } catch (e: IOException) {
                     Log.e(logTag, e.message)
+                    ErrorResponse(
+                        response.code(),
+                        SERVER_MSG_ERROR
+                    )
                 }
             } else {
                 ErrorResponse(
