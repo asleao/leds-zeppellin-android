@@ -12,42 +12,50 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
+object ServiceGenerator {
 
-private val moshiFactory = Moshi.Builder()
-    .add(BigDecimalAdapter())
-    .add(DateAdapter())
-    .build()
+    private val moshiFactory = Moshi.Builder()
+        .add(BigDecimalAdapter())
+        .add(DateAdapter())
+        .build()
 
-private val builder = Retrofit.Builder()
-    .baseUrl(buildUrl())
-    .addConverterFactory(MoshiConverterFactory.create(moshiFactory))
+    private val builder = Retrofit.Builder()
+        .baseUrl(buildUrl())
+        .addConverterFactory(MoshiConverterFactory.create(moshiFactory))
 
-private var retrofit = builder.build()
+    private var retrofit = builder.build()
 
-private val logging = HttpLoggingInterceptor()
-    .setLevel(HttpLoggingInterceptor.Level.BODY)
+    private val logging = HttpLoggingInterceptor()
+        .setLevel(HttpLoggingInterceptor.Level.BODY)
 
-private val httpClient = OkHttpClient.Builder()
+    private val httpClient = OkHttpClient.Builder()
 
-fun <S> createService(serviceClass: Class<S>, token: String): S {
-    val authorizationInterceptor = AuthorizationInterceptor(token)
-
-    httpClient.addInterceptor(authorizationInterceptor)
-
-    if (!httpClient.interceptors().contains(logging) && BuildConfig.DEBUG) {
-        httpClient.addNetworkInterceptor(StethoInterceptor())
-        httpClient.addInterceptor(logging)
-        builder.client(httpClient.build())
-        retrofit = builder.build()
+    fun <S> createService(serviceClass: Class<S>): S {
+        return createService(serviceClass, null)
     }
 
-    return retrofit.create(serviceClass)
-}
+    fun <S> createService(serviceClass: Class<S>, token: String?): S {
+        token?.let {
+            val authorizationInterceptor = AuthorizationInterceptor(token)
+            httpClient.addInterceptor(authorizationInterceptor)
+        }
 
-private fun buildUrl(): HttpUrl {
-    return HttpUrl.Builder()
-        .scheme(SCHEME)
-        .host(HOST)
-        .addPathSegments(API_VERSION)
-        .build()
+        if (!httpClient.interceptors().contains(logging) && BuildConfig.DEBUG) {
+            httpClient.addNetworkInterceptor(StethoInterceptor())
+            httpClient.addInterceptor(logging)
+            builder.client(httpClient.build())
+            retrofit = builder.build()
+        }
+
+        return retrofit.create(serviceClass)
+    }
+
+    private fun buildUrl(): HttpUrl {
+        return HttpUrl.Builder()
+            .scheme(SCHEME)
+            .host(HOST)
+            .addPathSegments(API)
+            .addPathSegments(API_VERSION)
+            .build()
+    }
 }

@@ -2,7 +2,7 @@ package br.com.ledszeppelin.utils
 
 import com.squareup.moshi.FromJson
 import com.squareup.moshi.ToJson
-import java.time.LocalDate
+import org.joda.time.LocalDate
 
 
 class DateAdapter {

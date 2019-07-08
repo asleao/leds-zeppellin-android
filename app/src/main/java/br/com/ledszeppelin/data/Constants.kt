@@ -1,11 +1,12 @@
 package br.com.ledszeppelin.data
 
-internal val SCHEME = "https"
-internal val HOST = "api.themoviedb.org"
-internal val API_VERSION = "3/"
-val AUTHORIZATION = "Authorization"
-val AUTHORIZATION_TYPE = "Bearer"
-val NETWORK_ERROR_CODE = 503
-val GENERIC_ERROR_CODE = 500
+const val SCHEME = "https"
+const val HOST = "leds-zeppellin-api-dev.herokuapp.com"
+const val API = "api"
+const val API_VERSION = "v1/"
+const val AUTHORIZATION = "Authorization"
+const val AUTHORIZATION_TYPE = "Bearer"
+const val NETWORK_ERROR_CODE = 503
+const val GENERIC_ERROR_CODE = 500
 
 
